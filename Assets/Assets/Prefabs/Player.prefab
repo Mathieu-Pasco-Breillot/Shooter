@@ -88,7 +88,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5338040443079810596}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.614, z: 0.229}
+  m_LocalPosition: {x: 0, y: 0.614, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1.5674747}
   m_Children: []
   m_Father: {fileID: 1093291742}
@@ -293,6 +293,7 @@ MonoBehaviour:
   runSpeed: 6
   jumpForce: 4
   normalCamera: {fileID: 5338040443079810592}
+  weaponParent: {fileID: 0}
 --- !u!143 &5338040443859239050
 CharacterController:
   m_ObjectHideFlags: 0
