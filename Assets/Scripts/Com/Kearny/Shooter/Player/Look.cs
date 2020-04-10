@@ -4,19 +4,24 @@ namespace Com.Kearny.Shooter.Player
 {
     public class Look : MonoBehaviour
     {
-        public static bool cursorLocked = true;
+        #region Variables
+
+        private static bool _cursorLocked = true;
 
         public Transform player;
-
-        public Transform playerEyes;
+        public Transform cameras;
+        public Transform weapon;
 
         public float xSensitivity;
         public float ySensitivity;
 
-        public float minYAngle = -65f;
-        public float maxYAngle = 30f;
+        public float maxAngle = 90f;
 
         private readonly Quaternion _camCenter = new Quaternion(0, 0, 0, 1);
+
+        #endregion
+
+        #region MonoBehaviour Callbacks
 
         // Start is called before the first frame update
         private void Start()
@@ -26,7 +31,7 @@ namespace Com.Kearny.Shooter.Player
         // Update is called once per frame
         private void Update()
         {
-            if (cursorLocked)
+            if (_cursorLocked)
             {
                 SetY();
                 SetX();
@@ -35,15 +40,21 @@ namespace Com.Kearny.Shooter.Player
             UpdateLockCursor();
         }
 
+        #endregion
+
+        #region Private Methods
+
         private void SetY()
         {
             var yAngle = Input.GetAxis("Mouse Y") * ySensitivity * Time.deltaTime;
             var xRotation = Quaternion.AngleAxis(yAngle, -Vector3.right);
-            var delta = playerEyes.localRotation * xRotation;
-
+            var delta = cameras.localRotation * xRotation;
             var angle = Quaternion.Angle(_camCenter, delta);
-            if (angle > minYAngle && angle < maxYAngle)
-                playerEyes.localRotation = delta;
+            
+            if (!(angle > -maxAngle) || !(angle < maxAngle)) return;
+            
+            cameras.localRotation = delta;
+            weapon.rotation = cameras.rotation;
         }
 
         private void SetX()
@@ -55,16 +66,16 @@ namespace Com.Kearny.Shooter.Player
             player.localRotation = delta;
         }
 
-        void UpdateLockCursor()
+        private static void UpdateLockCursor()
         {
-            if (cursorLocked)
+            if (_cursorLocked)
             {
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
 
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {
-                    cursorLocked = false;
+                    _cursorLocked = false;
                 }
             }
             else
@@ -74,9 +85,11 @@ namespace Com.Kearny.Shooter.Player
 
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {
-                    cursorLocked = true;
+                    _cursorLocked = true;
                 }
             }
         }
+
+        #endregion
     }
 }

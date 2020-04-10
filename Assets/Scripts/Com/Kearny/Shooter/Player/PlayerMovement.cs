@@ -6,6 +6,8 @@ namespace Com.Kearny.Shooter.Player
 {
     public class PlayerMovement : MonoBehaviour
     {
+        #region Variables
+
         [Header("Player Motor")] [Range(1f, 15f)]
         public float walkSpeed;
 
@@ -18,6 +20,10 @@ namespace Com.Kearny.Shooter.Player
 
         private CharacterController _characterController;
         private const float FovChangeSpeed = 5f;
+
+        #endregion
+
+        #region MonoBehaviour Callbacks
 
         // Start is called before the first frame update
         private void Start()
@@ -45,6 +51,10 @@ namespace Com.Kearny.Shooter.Player
             if (_characterController.isGrounded)
                 Jump();
         }
+
+        #endregion
+
+        #region Private Methods
 
         private float Walk()
         {
@@ -80,5 +90,7 @@ namespace Com.Kearny.Shooter.Player
                 yield return null;
             } while (!_characterController.isGrounded);
         }
+
+        #endregion
     }
 }
