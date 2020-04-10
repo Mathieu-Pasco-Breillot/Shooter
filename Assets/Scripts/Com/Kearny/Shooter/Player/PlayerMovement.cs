@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 namespace Com.Kearny.Shooter.Player
@@ -72,7 +71,7 @@ namespace Com.Kearny.Shooter.Player
         }
 
         private void Jump()
-        {
+        { 
             if (Input.GetButtonDown("Jump"))
             {
                 StartCoroutine(PerformJumpRoutine());

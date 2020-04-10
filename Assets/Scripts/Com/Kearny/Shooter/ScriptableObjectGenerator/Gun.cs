@@ -7,6 +7,7 @@ namespace Com.Kearny.Shooter.ScriptableObjectGenerator
     {
         public string name;
         public float fireRate;
+        public float aimSpeed;
         public GameObject prefab;
     }
 }
