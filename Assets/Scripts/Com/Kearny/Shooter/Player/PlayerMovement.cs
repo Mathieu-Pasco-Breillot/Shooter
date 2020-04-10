@@ -12,11 +12,17 @@ namespace Com.Kearny.Shooter.Player
         [Range(1f, 15f)] public float runSpeed;
         [Range(1f, 15f)] public float jumpForce;
 
+        public Camera normalCamera;
+        private float _baseFov;
+        private const float SprintFovModifier = 1.15f;
+
         private CharacterController _characterController;
+        private const float FovChangeSpeed = 5f;
 
         // Start is called before the first frame update
         private void Start()
         {
+            _baseFov = normalCamera.fieldOfView;
             if (Camera.main != null) Camera.main.enabled = false;
             _characterController = GetComponent<CharacterController>();
         }
@@ -32,13 +38,27 @@ namespace Com.Kearny.Shooter.Player
             Vector3 fwdMovement = isGrounded ? localTransform.forward * verticalInput : Vector3.zero;
             Vector3 rightMovement = isGrounded ? localTransform.right * horizontalInput : Vector3.zero;
 
-            Console.WriteLine(Input.GetKeyDown(KeyCode.LeftShift));
+            var speed = Input.GetKey(KeyCode.LeftShift) ? Sprint() : Walk();
 
-            var speed = Input.GetKey(KeyCode.LeftShift) ? runSpeed : walkSpeed;
             _characterController.SimpleMove(Vector3.ClampMagnitude(fwdMovement + rightMovement, 1f) * speed);
 
             if (_characterController.isGrounded)
                 Jump();
+        }
+
+        private float Walk()
+        {
+            normalCamera.fieldOfView = Mathf.Lerp(normalCamera.fieldOfView, _baseFov, Time.deltaTime * FovChangeSpeed);
+
+            return walkSpeed;
+        }
+
+        private float Sprint()
+        {
+            normalCamera.fieldOfView =
+                Mathf.Lerp(normalCamera.fieldOfView, _baseFov * SprintFovModifier, Time.deltaTime * FovChangeSpeed);
+
+            return runSpeed;
         }
 
         private void Jump()

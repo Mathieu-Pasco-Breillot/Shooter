@@ -25548,6 +25548,12 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1756046926}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!20 &1902669409 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 5338040443079810592, guid: 70c3c324765014c2b859b6ab5b82ccce,
+    type: 3}
+  m_PrefabInstance: {fileID: 5338040442318441901}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1993489023
 GameObject:
   m_ObjectHideFlags: 0
@@ -25740,6 +25746,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5338040443079810596, guid: 70c3c324765014c2b859b6ab5b82ccce,
+        type: 3}
+      propertyPath: m_Name
+      value: Normal Camera
+      objectReference: {fileID: 0}
     - target: {fileID: 5338040443859239048, guid: 70c3c324765014c2b859b6ab5b82ccce,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -25795,6 +25806,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5338040443859239051, guid: 70c3c324765014c2b859b6ab5b82ccce,
+        type: 3}
+      propertyPath: normalCamera
+      value: 
+      objectReference: {fileID: 1902669409}
     - target: {fileID: 5338040443859239052, guid: 70c3c324765014c2b859b6ab5b82ccce,
         type: 3}
       propertyPath: m_Name
