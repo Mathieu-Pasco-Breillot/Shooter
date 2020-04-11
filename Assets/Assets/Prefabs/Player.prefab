@@ -419,7 +419,7 @@ MonoBehaviour:
   loadOut:
   - {fileID: 11400000, guid: 7b4f73606972049779e8c7c58f06f6fb, type: 2}
   weaponParent: {fileID: 1713953599}
-  impactEffect: {fileID: 4017065225808752314, guid: 5abc36a4f90b74f85a659a82f700354a,
+  impactEffect: {fileID: 2254988187679238454, guid: 4a0f03046b84147179f4fa799c0eab3c,
     type: 3}
 --- !u!1 &5379808783203011155
 GameObject:

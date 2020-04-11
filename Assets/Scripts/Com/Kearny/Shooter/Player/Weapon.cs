@@ -41,12 +41,17 @@ namespace Com.Kearny.Shooter.Player
             {
                 // 1 is right mouse button
                 Aim(Input.GetButton("Fire2"));
-            }
-
-            if (Input.GetButton("Fire1") && _currentWeaponIndex > -1 && Time.time >= _nextTimeToFire)
-            {
-                _nextTimeToFire = Time.time + 1f / _currentWeaponGun.fireRate;
-                Shoot();
+                
+                // Shoot
+                if (Input.GetButtonDown("Fire1") && Time.time >= _nextTimeToFire)
+                {
+                    _nextTimeToFire = Time.time + 1f / _currentWeaponGun.fireRate;
+                    Shoot();
+                }
+                
+                // Weapon elasticity
+                _currentWeaponGameObject.transform.localPosition =
+                    Vector3.Lerp(_currentWeaponGameObject.transform.localPosition, Vector3.zero, Time.deltaTime * 4);
             }
         }
 
@@ -68,13 +73,18 @@ namespace Com.Kearny.Shooter.Player
             if (!Physics.Raycast(_spawnCamera.position, bloom, out var hit)) return;
 
             var impact = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
-            Destroy(impact, 0.5f);
+            Destroy(impact, 2f);
 
-            // Apply force
+            // Apply force on target
             if (hit.rigidbody != null)
             {
                 hit.rigidbody.AddForce(-hit.normal * _currentWeaponGun.impactForce);
             }
+            
+            // Gun FX
+            _currentWeaponGameObject.transform.Rotate(-_currentWeaponGun.recoil, 0, 0);
+            _currentWeaponGameObject.transform.position -=
+                _currentWeaponGameObject.transform.forward * _currentWeaponGun.kickBack;
         }
 
         private void Aim(bool isAiming)
