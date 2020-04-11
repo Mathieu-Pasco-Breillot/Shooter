@@ -10,8 +10,11 @@ namespace Com.Kearny.Shooter.Player
         public Gun[] loadOut;
         public Transform weaponParent;
 
-        private int _currentWeaponIndex;
+        private int _currentWeaponIndex = -1;
         private GameObject _currentWeapon;
+        private Transform _anchor;
+        private Transform _stateHip;
+        private Transform _stateAds;
 
         #endregion
 
@@ -27,29 +30,25 @@ namespace Com.Kearny.Shooter.Player
             // Draw weapon situated on & keyboard symbol
             if (Input.GetKeyDown(KeyCode.Ampersand)) Equip(0);
 
-            if (_currentWeapon != null)
+            if (_currentWeaponIndex > -1)
             {
                 // 1 is right mouse button
                 Aim(Input.GetMouseButton(1));
             }
         }
-        
+
         #endregion
 
         #region Private Methods
 
         private void Aim(bool isAiming)
         {
-            var anchor = _currentWeapon.transform.Find("Anchor");
-            var stateHip = _currentWeapon.transform.Find("States/Hip");
-            var stateAds = _currentWeapon.transform.Find("States/ADS");
-
-            anchor.position = Vector3.Lerp(anchor.position,
-                isAiming ? stateAds.position : stateHip.position,
+            _anchor.position = Vector3.Lerp(_anchor.position,
+                isAiming ? _stateAds.position : _stateHip.position,
                 Time.deltaTime * loadOut[_currentWeaponIndex].aimSpeed);
         }
 
-        
+
         // Equip 0 for primary, 1 for second, etc...
         private void Equip(int index)
         {
@@ -64,6 +63,12 @@ namespace Com.Kearny.Shooter.Player
             newEquipment.transform.localEulerAngles = Vector3.zero;
 
             _currentWeapon = newEquipment;
+            
+            var currentWeaponTransform = _currentWeapon.transform;
+            
+            _anchor = currentWeaponTransform.Find("Anchor");
+            _stateHip = currentWeaponTransform.Find("States/Hip");
+            _stateAds = currentWeaponTransform.Find("States/ADS");
         }
 
         #endregion
