@@ -19,7 +19,7 @@ namespace Com.Kearny.Shooter.Player
 
         // Shoot
         public GameObject impactEffect;
-        private Transform _spawnCamera;
+        private Transform normalCamera;
         private float _nextTimeToFire = 0f;
 
         #endregion
@@ -29,7 +29,7 @@ namespace Com.Kearny.Shooter.Player
         // Update is called once per frame
         private void Start()
         {
-            _spawnCamera = transform.Find("Cameras/Normal Camera");
+            normalCamera = transform.Find("Cameras/Normal Camera");
         }
 
         private void Update()
@@ -62,15 +62,15 @@ namespace Com.Kearny.Shooter.Player
         private void Shoot() 
         {
             // Bloom
-            var position = _spawnCamera.position;
-            var bloom = position + _spawnCamera.forward * 1000;
-            bloom += Random.Range(-_currentWeaponGun.bloom, _currentWeaponGun.bloom) * _spawnCamera.up;
-            bloom += Random.Range(-_currentWeaponGun.bloom, _currentWeaponGun.bloom) * _spawnCamera.right;
+            var position = normalCamera.position;
+            var bloom = position + normalCamera.forward * 1000;
+            bloom += Random.Range(-_currentWeaponGun.bloom, _currentWeaponGun.bloom) * normalCamera.up;
+            bloom += Random.Range(-_currentWeaponGun.bloom, _currentWeaponGun.bloom) * normalCamera.right;
             bloom -= position;
             bloom.Normalize();
             
             // Ray cast
-            if (!Physics.Raycast(_spawnCamera.position, bloom, out var hit)) return;
+            if (!Physics.Raycast(normalCamera.position, bloom, out var hit)) return;
 
             var impact = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
             Destroy(impact, 2f);
