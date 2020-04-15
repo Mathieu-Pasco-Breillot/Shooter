@@ -10,17 +10,17 @@ namespace Com.Kearny.Shooter.Player
         public Gun[] loadOut;
         public Transform weaponParent;
 
-        private int _currentWeaponIndex = -1;
-        private GameObject _currentWeaponGameObject;
-        private Gun _currentWeaponGun;
-        private Transform _anchor;
-        private Transform _stateHip;
-        private Transform _stateAds;
+        private int currentWeaponIndex = -1;
+        private GameObject currentWeaponGameObject;
+        private Gun currentWeaponGun;
+        private Transform anchor;
+        private Transform stateHip;
+        private Transform stateAds;
 
         // Shoot
         public GameObject impactEffect;
         private Transform normalCamera;
-        private float _nextTimeToFire = 0f;
+        private float nextTimeToFire = 0f;
 
         #endregion
 
@@ -37,21 +37,21 @@ namespace Com.Kearny.Shooter.Player
             // Draw weapon situated on & keyboard symbol
             if (Input.GetKeyDown(KeyCode.Ampersand)) Equip(0);
 
-            if (_currentWeaponIndex > -1)
+            if (currentWeaponIndex > -1)
             {
                 // 1 is right mouse button
                 Aim(Input.GetButton("Fire2"));
                 
                 // Shoot
-                if (Input.GetButtonDown("Fire1") && Time.time >= _nextTimeToFire)
+                if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeToFire)
                 {
-                    _nextTimeToFire = Time.time + 1f / _currentWeaponGun.fireRate;
+                    nextTimeToFire = Time.time + 1f / currentWeaponGun.fireRate;
                     Shoot();
                 }
                 
                 // Weapon elasticity
-                _currentWeaponGameObject.transform.localPosition =
-                    Vector3.Lerp(_currentWeaponGameObject.transform.localPosition, Vector3.zero, Time.deltaTime * 4);
+                currentWeaponGameObject.transform.localPosition =
+                    Vector3.Lerp(currentWeaponGameObject.transform.localPosition, Vector3.zero, Time.deltaTime * 4);
             }
         }
 
@@ -64,8 +64,8 @@ namespace Com.Kearny.Shooter.Player
             // Bloom
             var position = normalCamera.position;
             var bloom = position + normalCamera.forward * 1000;
-            bloom += Random.Range(-_currentWeaponGun.bloom, _currentWeaponGun.bloom) * normalCamera.up;
-            bloom += Random.Range(-_currentWeaponGun.bloom, _currentWeaponGun.bloom) * normalCamera.right;
+            bloom += Random.Range(-currentWeaponGun.bloom, currentWeaponGun.bloom) * normalCamera.up;
+            bloom += Random.Range(-currentWeaponGun.bloom, currentWeaponGun.bloom) * normalCamera.right;
             bloom -= position;
             bloom.Normalize();
             
@@ -78,43 +78,43 @@ namespace Com.Kearny.Shooter.Player
             // Apply force on target
             if (hit.rigidbody != null)
             {
-                hit.rigidbody.AddForce(-hit.normal * _currentWeaponGun.impactForce);
+                hit.rigidbody.AddForce(-hit.normal * currentWeaponGun.impactForce);
             }
             
             // Gun FX
-            _currentWeaponGameObject.transform.Rotate(-_currentWeaponGun.recoil, 0, 0);
-            _currentWeaponGameObject.transform.position -=
-                _currentWeaponGameObject.transform.forward * _currentWeaponGun.kickBack;
+            currentWeaponGameObject.transform.Rotate(-currentWeaponGun.recoil, 0, 0);
+            currentWeaponGameObject.transform.position -=
+                currentWeaponGameObject.transform.forward * currentWeaponGun.kickBack;
         }
 
         private void Aim(bool isAiming)
         {
-            _anchor.position = Vector3.Lerp(_anchor.position,
-                isAiming ? _stateAds.position : _stateHip.position,
-                Time.deltaTime * _currentWeaponGun.aimSpeed);
+            anchor.position = Vector3.Lerp(anchor.position,
+                isAiming ? stateAds.position : stateHip.position,
+                Time.deltaTime * currentWeaponGun.aimSpeed);
         }
 
         // Equip 0 for primary, 1 for second, etc...
         private void Equip(int index)
         {
-            Destroy(_currentWeaponGameObject);
+            Destroy(currentWeaponGameObject);
 
-            _currentWeaponIndex = index;
+            currentWeaponIndex = index;
 
-            GameObject newEquipment = Instantiate(loadOut[index].prefab, weaponParent.localPosition,
+            var newEquipment = Instantiate(loadOut[index].prefab, weaponParent.localPosition,
                 weaponParent.localRotation,
                 weaponParent);
             newEquipment.transform.localPosition = Vector3.zero;
             newEquipment.transform.localEulerAngles = Vector3.zero;
 
-            _currentWeaponGameObject = newEquipment;
-            _currentWeaponGun = loadOut[index];
+            currentWeaponGameObject = newEquipment;
+            currentWeaponGun = loadOut[index];
 
-            var currentWeaponTransform = _currentWeaponGameObject.transform;
+            var currentWeaponTransform = currentWeaponGameObject.transform;
 
-            _anchor = currentWeaponTransform.Find("Anchor");
-            _stateHip = currentWeaponTransform.Find("States/Hip");
-            _stateAds = currentWeaponTransform.Find("States/ADS");
+            anchor = currentWeaponTransform.Find("Anchor");
+            stateHip = currentWeaponTransform.Find("States/Hip");
+            stateAds = currentWeaponTransform.Find("States/ADS");
         }
 
         #endregion

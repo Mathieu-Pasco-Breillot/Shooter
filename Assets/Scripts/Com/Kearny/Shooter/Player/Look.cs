@@ -17,7 +17,7 @@ namespace Com.Kearny.Shooter.Player
 
         public float maxAngle = 90f;
 
-        private readonly Quaternion _camCenter = new Quaternion(0, 0, 0, 1);
+        private readonly Quaternion camCenter = new Quaternion(0, 0, 0, 1);
 
         #endregion
 
@@ -49,7 +49,7 @@ namespace Com.Kearny.Shooter.Player
             var yAngle = Input.GetAxis("Mouse Y") * ySensitivity * Time.deltaTime;
             var xRotation = Quaternion.AngleAxis(yAngle, -Vector3.right);
             var delta = cameras.localRotation * xRotation;
-            var angle = Quaternion.Angle(_camCenter, delta);
+            var angle = Quaternion.Angle(camCenter, delta);
             
             if (!(angle > -maxAngle) || !(angle < maxAngle)) return;
             

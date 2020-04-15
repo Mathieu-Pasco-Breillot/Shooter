@@ -6,9 +6,9 @@ using System.Reflection;
 [CustomEditor(typeof(Readme))]
 [InitializeOnLoad]
 public class ReadmeEditor : Editor {
-	private static string kShowedReadmeSessionStateName = "ReadmeEditor.showedReadme";
+	private static string _kShowedReadmeSessionStateName = "ReadmeEditor.showedReadme";
 
-	private static float kSpace = 16f;
+	private static float _kSpace = 16f;
 	
 	static ReadmeEditor()
 	{
@@ -17,10 +17,10 @@ public class ReadmeEditor : Editor {
 
 	private static void SelectReadmeAutomatically()
 	{
-		if (!SessionState.GetBool(kShowedReadmeSessionStateName, false ))
+		if (!SessionState.GetBool(_kShowedReadmeSessionStateName, false ))
 		{
 			var readme = SelectReadme();
-			SessionState.SetBool(kShowedReadmeSessionStateName, true);
+			SessionState.SetBool(_kShowedReadmeSessionStateName, true);
 			
 			if (readme && !readme.loadedLayout)
 			{
@@ -46,7 +46,7 @@ public class ReadmeEditor : Editor {
 		{
 			var readmeObject = AssetDatabase.LoadMainAssetAtPath(AssetDatabase.GUIDToAssetPath(ids[0]));
 			
-			Selection.objects = new UnityEngine.Object[]{readmeObject};
+			Selection.objects = new Object[]{readmeObject};
 			
 			return (Readme)readmeObject;
 		}
@@ -94,46 +94,46 @@ public class ReadmeEditor : Editor {
 					Application.OpenURL(section.url);
 				}
 			}
-			GUILayout.Space(kSpace);
+			GUILayout.Space(_kSpace);
 		}
 	}
 
 
-	private bool m_Initialized;
+	private bool mInitialized;
 
-	private GUIStyle LinkStyle { get { return m_LinkStyle; } }
-	[SerializeField] private GUIStyle m_LinkStyle;
+	private GUIStyle LinkStyle { get { return mLinkStyle; } }
+	[SerializeField] private GUIStyle mLinkStyle;
 
-	private GUIStyle TitleStyle { get { return m_TitleStyle; } }
-	[SerializeField] private GUIStyle m_TitleStyle;
+	private GUIStyle TitleStyle { get { return mTitleStyle; } }
+	[SerializeField] private GUIStyle mTitleStyle;
 
-	private GUIStyle HeadingStyle { get { return m_HeadingStyle; } }
-	[SerializeField] private GUIStyle m_HeadingStyle;
+	private GUIStyle HeadingStyle { get { return mHeadingStyle; } }
+	[SerializeField] private GUIStyle mHeadingStyle;
 
-	private GUIStyle BodyStyle { get { return m_BodyStyle; } }
-	[SerializeField] private GUIStyle m_BodyStyle;
+	private GUIStyle BodyStyle { get { return mBodyStyle; } }
+	[SerializeField] private GUIStyle mBodyStyle;
 
 	private void Init()
 	{
-		if (m_Initialized)
+		if (mInitialized)
 			return;
-		m_BodyStyle = new GUIStyle(EditorStyles.label);
-		m_BodyStyle.wordWrap = true;
-		m_BodyStyle.fontSize = 14;
+		mBodyStyle = new GUIStyle(EditorStyles.label);
+		mBodyStyle.wordWrap = true;
+		mBodyStyle.fontSize = 14;
 		
-		m_TitleStyle = new GUIStyle(m_BodyStyle);
-		m_TitleStyle.fontSize = 26;
+		mTitleStyle = new GUIStyle(mBodyStyle);
+		mTitleStyle.fontSize = 26;
 		
-		m_HeadingStyle = new GUIStyle(m_BodyStyle);
-		m_HeadingStyle.fontSize = 18 ;
+		mHeadingStyle = new GUIStyle(mBodyStyle);
+		mHeadingStyle.fontSize = 18 ;
 		
-		m_LinkStyle = new GUIStyle(m_BodyStyle);
-		m_LinkStyle.wordWrap = false;
+		mLinkStyle = new GUIStyle(mBodyStyle);
+		mLinkStyle.wordWrap = false;
 		// Match selection color which works nicely for both light and dark skins
-		m_LinkStyle.normal.textColor = new Color (0x00/255f, 0x78/255f, 0xDA/255f, 1f);
-		m_LinkStyle.stretchWidth = false;
+		mLinkStyle.normal.textColor = new Color (0x00/255f, 0x78/255f, 0xDA/255f, 1f);
+		mLinkStyle.stretchWidth = false;
 		
-		m_Initialized = true;
+		mInitialized = true;
 	}
 
 	private bool LinkLabel (GUIContent label, params GUILayoutOption[] options)

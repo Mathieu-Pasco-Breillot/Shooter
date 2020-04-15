@@ -64,16 +64,16 @@ namespace GameDevHQ.FileBase.Plugins.FPS_Character_Controller
 
         void FPSController()
         {
-            float h = Input.GetAxis("Horizontal"); //horizontal inputs (a, d, leftarrow, rightarrow)
-            float v = Input.GetAxis("Vertical"); //veritical inputs (w, s, uparrow, downarrow)
+            var h = Input.GetAxis("Horizontal"); //horizontal inputs (a, d, leftarrow, rightarrow)
+            var v = Input.GetAxis("Vertical"); //veritical inputs (w, s, uparrow, downarrow)
 
-            Vector3 direction = new Vector3(h, 0, v); //direction to move
-            Vector3 velocity = direction * _walkSpeed; //velocity is the direction and speed we travel
+            var direction = new Vector3(h, 0, v); //direction to move
+            var velocity = direction * _walkSpeed; //velocity is the direction and speed we travel
 
             if (Input.GetKeyDown(KeyCode.C) && _isRunning == false)
             {
 
-                if (_crouching == true)
+                if (_crouching)
                 {
                     _crouching = false;
                     _controller.height = 2.0f;
@@ -96,7 +96,7 @@ namespace GameDevHQ.FileBase.Plugins.FPS_Character_Controller
                 _isRunning = false;
             }
 
-            if (_controller.isGrounded == true) //check if we're grounded
+            if (_controller.isGrounded) //check if we're grounded
             {
                 if (Input.GetKeyDown(KeyCode.Space)) //check for the space key
                 {
@@ -117,22 +117,22 @@ namespace GameDevHQ.FileBase.Plugins.FPS_Character_Controller
 
         void CameraController()
         {
-            float mouseX = Input.GetAxis("Mouse X"); //get mouse movement on the x
-            float mouseY = Input.GetAxis("Mouse Y"); //get mouse movement on the y
+            var mouseX = Input.GetAxis("Mouse X"); //get mouse movement on the x
+            var mouseY = Input.GetAxis("Mouse Y"); //get mouse movement on the y
 
-            Vector3 rot = transform.localEulerAngles; //store current rotation
+            var rot = transform.localEulerAngles; //store current rotation
             rot.y += mouseX * _lookSensitivity; //add our mouseX movement to the y axis
             transform.localRotation = Quaternion.AngleAxis(rot.y, Vector3.up); ////rotate along the y axis by movement amount
 
-            Vector3 camRot = _fpsCamera.transform.localEulerAngles; //store the current rotation
+            var camRot = _fpsCamera.transform.localEulerAngles; //store the current rotation
             camRot.x += -mouseY * _lookSensitivity; //add the mouseY movement to the x axis
             _fpsCamera.transform.localRotation = Quaternion.AngleAxis(camRot.x, Vector3.right); //rotate along the x axis by movement amount
         }
 
         void HeadBobbing()
         {
-            float h = Input.GetAxis("Horizontal"); //horizontal inputs (a, d, leftarrow, rightarrow)
-            float v = Input.GetAxis("Vertical"); //veritical inputs (w, s, uparrow, downarrow)
+            var h = Input.GetAxis("Horizontal"); //horizontal inputs (a, d, leftarrow, rightarrow)
+            var v = Input.GetAxis("Vertical"); //veritical inputs (w, s, uparrow, downarrow)
 
             if (h != 0 || v != 0) //Are we moving?
             {
@@ -146,7 +146,7 @@ namespace GameDevHQ.FileBase.Plugins.FPS_Character_Controller
                     _timer += _walkFrequency * Time.deltaTime; //increment timer for our sin/cos waves when walking
                 }
 
-                Vector3 headPosition = new Vector3 //calculate the head position in our walk cycle
+                var headPosition = new Vector3 //calculate the head position in our walk cycle
                     (
                         _initialCameraPos.x + Mathf.Cos(_timer) * _heightOffset, //x value
                         _initialCameraPos.y + Mathf.Sin(_timer) * _heightOffset, //y value
@@ -164,7 +164,7 @@ namespace GameDevHQ.FileBase.Plugins.FPS_Character_Controller
             {
                 _timer = Mathf.PI / 2; //reset timer back to 1 for initial walk cycle 
 
-                Vector3 resetHead = new Vector3 //calculate reset head position back to initial cam pos
+                var resetHead = new Vector3 //calculate reset head position back to initial cam pos
                     (
                     Mathf.Lerp(_fpsCamera.transform.localPosition.x, _initialCameraPos.x, _smooth * Time.deltaTime), //x vlaue
                     Mathf.Lerp(_fpsCamera.transform.localPosition.y, _initialCameraPos.y, _smooth * Time.deltaTime), //y value

@@ -9,7 +9,7 @@ namespace Com.Kearny.Shooter.Weapon
         public float swayIntensity;
         public float smooth;
 
-        private Quaternion _originRotation;
+        private Quaternion originRotation;
         
         #endregion
 
@@ -17,7 +17,7 @@ namespace Com.Kearny.Shooter.Weapon
 
         private void Start()
         {
-            _originRotation = transform.localRotation;
+            originRotation = transform.localRotation;
         }
 
         private void Update()
@@ -37,7 +37,7 @@ namespace Com.Kearny.Shooter.Weapon
             // Calculate target rotation
             var xAdjustment = Quaternion.AngleAxis(-swayIntensity * xMouse, Vector3.up);
             var yAdjustment = Quaternion.AngleAxis(swayIntensity * yMouse, Vector3.right);
-            var targetRotation = _originRotation * xAdjustment * yAdjustment;
+            var targetRotation = originRotation * xAdjustment * yAdjustment;
             
             // Rotate towards rotation
             transform.localRotation = Quaternion.Lerp(transform.localRotation, targetRotation, Time.deltaTime * smooth);
