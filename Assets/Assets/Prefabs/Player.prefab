@@ -422,6 +422,8 @@ MonoBehaviour:
   weaponParent: {fileID: 1713953599}
   impactEffect: {fileID: 2254988187679238454, guid: 4a0f03046b84147179f4fa799c0eab3c,
     type: 3}
+  impactBloodEffect: {fileID: 2254988187679238454, guid: 8862869e887ac47b8a33fa96c02d7751,
+    type: 3}
 --- !u!82 &1891079917198657394
 AudioSource:
   m_ObjectHideFlags: 0

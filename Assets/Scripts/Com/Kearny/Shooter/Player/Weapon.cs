@@ -19,6 +19,7 @@ namespace Com.Kearny.Shooter.Player
 
         // Shoot
         public GameObject impactEffect;
+        public GameObject impactBloodEffect;
         private Transform normalCamera;
         private float nextTimeToFire = 0f;
 
@@ -72,8 +73,18 @@ namespace Com.Kearny.Shooter.Player
             // Ray cast
             if (!Physics.Raycast(normalCamera.position, bloom, out var hit)) return;
 
-            var impact = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
-            Destroy(impact, 2f);
+            var transformTag = hit.transform.tag;
+
+            if (transformTag == "Zombie")
+            {
+                var impact = Instantiate(impactBloodEffect, hit.point, Quaternion.LookRotation(hit.normal));
+                Destroy(impact, 2f);
+            }
+            else
+            {
+                var impact = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
+                Destroy(impact, 2f);
+            }
 
             // Apply force on target
             if (hit.rigidbody != null)
