@@ -4,17 +4,37 @@ namespace Com.Kearny.Shooter.Guns
 {
     public class Projectile : MonoBehaviour
     {
-        private float speed;
+        public LayerMask collisionMask; 
+            
+        private float _speed;
 
         public void SetSpeed(float newSpeed)
         {
-            speed = newSpeed;
+            _speed = newSpeed;
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
-            transform.Translate(Vector3.forward * (Time.deltaTime * speed));
+            var moveDistance = (Time.deltaTime * _speed);
+            CheckCollisions(moveDistance);
+            transform.Translate(Vector3.forward * moveDistance);
+        }
+
+        private void CheckCollisions(float moveDistance)
+        {
+            var localTransform = transform;
+            Ray ray = new Ray(localTransform.position, localTransform.forward);
+            if (Physics.Raycast(ray, out var hit, moveDistance, collisionMask, QueryTriggerInteraction.Collide))
+            {
+                OnHitObject(hit);
+            }
+        }
+
+        private void OnHitObject(RaycastHit hit)
+        {
+            print(hit.collider.gameObject.name);
+            GameObject.Destroy(gameObject);
         }
     }
 }
