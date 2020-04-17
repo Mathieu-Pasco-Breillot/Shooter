@@ -18,6 +18,26 @@ namespace Com.Kearny.Shooter.Guns
             }
         }
 
+        private void Update()
+        {
+            if (!_isGunEquipped) return;
+
+            if (_equippedGun.FireType == FireType.SemiAutomatic)
+            {
+                if (Input.GetButtonDown("Fire1"))
+                {
+                    Shoot();
+                }
+            }
+            else if (_equippedGun.FireType == FireType.Automatic)
+            {
+                if (Input.GetButton("Fire1"))
+                {
+                    Shoot();
+                }
+            }
+        }
+
         public void EquipGun(Gun gunToEquip)
         {
             if (_equippedGun != null)
@@ -29,12 +49,9 @@ namespace Com.Kearny.Shooter.Guns
             _isGunEquipped = true;
         }
 
-        public void Shoot()
+        private void Shoot()
         {
-            if (_isGunEquipped)
-            {
-                _equippedGun.Shoot();
-            }
+            _equippedGun.Shoot();
         }
     }
 }

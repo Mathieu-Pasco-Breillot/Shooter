@@ -50,12 +50,6 @@ namespace Com.Kearny.Shooter.Player
                 SetX();
                 SetY();
             }
-            
-            // Weapon input
-            if (Input.GetButton("Fire1"))
-            {
-                _gunController.Shoot();
-            }
         }
 
         private void FixedUpdate()
