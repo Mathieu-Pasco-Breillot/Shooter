@@ -18,6 +18,8 @@ namespace Com.Kearny.Shooter.Player
         private PlayerController _controller;
         private Camera _mainCamera;
         private Transform _mainCameraTransform;
+
+        private GunController _gunController;
         
         private readonly Quaternion _camCenter = new Quaternion(0,0,0,1);
 
@@ -27,11 +29,13 @@ namespace Com.Kearny.Shooter.Player
             _mainCamera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
             _mainCameraTransform = _mainCamera.transform;
             _controller = GetComponent<PlayerController>();
+            _gunController = GetComponent<GunController>();
         }
 
         // Update is called once per frame
         private void Update()
         {
+            // Body movement input
             var horizontalInput = Input.GetAxisRaw("Horizontal");
             var verticalInput = Input.GetAxisRaw("Vertical");
 
@@ -39,11 +43,18 @@ namespace Com.Kearny.Shooter.Player
             var forwardMovement = localTransform.forward * verticalInput;
             var rightMovement = localTransform.right * horizontalInput;
             _controller.Move(Vector3.ClampMagnitude(forwardMovement + rightMovement, 1f) * moveSpeed);
-
+            
+            // Look movement input
             if (_cursorLocked)
             {
                 SetX();
                 SetY();
+            }
+            
+            // Weapon input
+            if (Input.GetButton("Fire1"))
+            {
+                _gunController.Shoot();
             }
         }
 

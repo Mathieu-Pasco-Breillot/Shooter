@@ -634,7 +634,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6638636198293400217}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Projectile Spawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -731,7 +731,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08344433945a493db16a332cac70eb7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  muzzle: {fileID: 0}
-  projectile: {fileID: 0}
+  muzzle: {fileID: 6638636198293400217}
+  projectile: {fileID: 4266817499533407773, guid: d5536493cfafc4ca5b4b2772c0cae48b,
+    type: 3}
   msBetweenShots: 100
   muzzleVelocity: 35

@@ -7,8 +7,8 @@ namespace Com.Kearny.Shooter.Guns
     {
         public Transform weaponHold;
         public Gun startingGun;
-
         private Gun _equippedGun;
+        private bool _isGunEquipped = false;
 
         private void Start()
         {
@@ -26,11 +26,15 @@ namespace Com.Kearny.Shooter.Guns
             }
 
             _equippedGun = Instantiate(gunToEquip, weaponHold.position, weaponHold.rotation, weaponHold);
+            _isGunEquipped = true;
         }
 
-        public static void RotateGun()
+        public void Shoot()
         {
-            throw new NotImplementedException();
+            if (_isGunEquipped)
+            {
+                _equippedGun.Shoot();
+            }
         }
     }
 }

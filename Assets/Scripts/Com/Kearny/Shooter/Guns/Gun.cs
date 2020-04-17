@@ -9,13 +9,13 @@ namespace Com.Kearny.Shooter.Guns
         public float msBetweenShots = 100;
         public float muzzleVelocity = 35;
 
-        private float nextShotTime;
+        private float _nextShotTime;
         
         public void Shoot()
         {
-            if (!(Time.time >= nextShotTime)) return;
+            if (!(Time.time >= _nextShotTime)) return;
             
-            nextShotTime = Time.time + msBetweenShots / 1000;
+            _nextShotTime = Time.time + msBetweenShots / 1000;
             var newProjectile = Instantiate(projectile, muzzle.position, muzzle.rotation);
             newProjectile.SetSpeed(muzzleVelocity);
         }
