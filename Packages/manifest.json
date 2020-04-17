@@ -2,6 +2,7 @@
   "dependencies": {
     "com.unity.ide.rider": "1.2.1",
     "com.unity.probuilder": "4.2.3",
+    "com.unity.progrids": "3.0.3-preview.6",
     "com.unity.render-pipelines.universal": "8.0.1",
     "com.unity.settings-manager": "1.0.2",
     "com.unity.test-framework": "1.1.13",

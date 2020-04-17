@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,25 +10,37 @@ namespace Com.Kearny.Shooter.Enemy
         private enum State
         {
             Idle,
+
             Chasing,
+
             Attacking
         };
 
         private State _currentState;
 
         private NavMeshAgent _pathFinder;
+
         private Transform _target;
-        private bool _isTargetAlive;
+
+        private LivingEntity _targetEntity;
+
         private Material _skinMaterial;
 
         private Color _originalColor;
 
         private const float AttackDistanceThreshold = 1.5f;
+
         private const float TimeBetweenAttacks = 1;
 
+        private const float Damage = 1;
+
         private float _nextAttackTime;
+
         private float _myCollisionRadius;
+
         private float _targetCollisionRadius;
+
+        private bool _hasTarget;
 
         protected override void Start()
         {
@@ -39,28 +50,41 @@ namespace Com.Kearny.Shooter.Enemy
             _skinMaterial = GetComponent<Renderer>().material;
             _originalColor = _skinMaterial.color;
 
-            _currentState = State.Chasing;
+            if (GameObject.FindGameObjectWithTag("Player"))
+            {
+                _currentState = State.Chasing;
+                _hasTarget = true;
 
-            _target = GameObject.FindGameObjectWithTag("Player").transform;
-            _isTargetAlive = true;
+                _target = GameObject.FindGameObjectWithTag("Player").transform;
+                _targetEntity = _target.GetComponent<LivingEntity>();
+                _targetEntity.OnDeath += OnTargetDeath;
 
-            _myCollisionRadius = GetComponent<CapsuleCollider>().radius;
-            _targetCollisionRadius = _target.GetComponent<CapsuleCollider>().radius;
+                _myCollisionRadius = GetComponent<CapsuleCollider>().radius;
+                _targetCollisionRadius = _target.GetComponent<CapsuleCollider>().radius;
 
-            StartCoroutine(UpdatePath());
+                StartCoroutine(UpdatePath());
+            }
         }
 
         private void Update()
         {
+            if (!_hasTarget) return;
             if (!(Time.time > _nextAttackTime)) return;
 
             var squareDistanceToTarget = (_target.position - transform.position).sqrMagnitude;
-            if (squareDistanceToTarget <
-                Mathf.Pow(AttackDistanceThreshold + _myCollisionRadius + _targetCollisionRadius, 2))
-            {
-                _nextAttackTime = Time.time + TimeBetweenAttacks;
-                StartCoroutine(Attack());
-            }
+            if (!(squareDistanceToTarget < Mathf.Pow(
+                AttackDistanceThreshold + _myCollisionRadius + _targetCollisionRadius,
+                2
+            ))) return;
+            
+            _nextAttackTime = Time.time + TimeBetweenAttacks;
+            StartCoroutine(Attack());
+        }
+
+        private void OnTargetDeath()
+        {
+            _hasTarget = false;
+            _currentState = State.Idle;
         }
 
         private IEnumerator Attack()
@@ -68,19 +92,26 @@ namespace Com.Kearny.Shooter.Enemy
             _currentState = State.Attacking;
 
             var transformPosition = transform.position;
-            Vector3 originalPosition = transformPosition;
+            var originalPosition = transformPosition;
 
             var targetPosition = _target.position;
-            Vector3 directionToTarget = (targetPosition - transformPosition).normalized;
-            Vector3 attackPosition = targetPosition - directionToTarget;
+            var directionToTarget = (targetPosition - transformPosition).normalized;
+            var attackPosition = targetPosition - directionToTarget;
 
             const float attackSpeed = 3;
             float percent = 0;
 
             _skinMaterial.color = Color.red;
+            var hasAppliedDamage = false;
 
             while (percent <= 1)
             {
+                if (percent <= .8f && !hasAppliedDamage)
+                {
+                    hasAppliedDamage = true;
+                    _targetEntity.TakeDamage(Damage);
+                }
+                
                 percent += Time.deltaTime * attackSpeed;
                 var interpolation = (-Mathf.Pow(percent, 2) + percent) * 4;
                 transform.position = Vector3.Lerp(originalPosition, attackPosition, interpolation);
@@ -97,13 +128,13 @@ namespace Com.Kearny.Shooter.Enemy
         {
             const float refreshRate = 0.5f;
 
-            while (_isTargetAlive)
+            while (_hasTarget)
             {
                 if (!isDead && _currentState == State.Chasing)
                 {
                     var targetPosition = _target.position;
-                    Vector3 directionToTarget = (targetPosition - transform.position).normalized;
-                    Vector3 targetedPosition =
+                    var directionToTarget = (targetPosition - transform.position).normalized;
+                    var targetedPosition =
                         targetPosition - directionToTarget *
                         (_myCollisionRadius + _targetCollisionRadius + AttackDistanceThreshold / 2);
                     _pathFinder.SetDestination(targetedPosition);

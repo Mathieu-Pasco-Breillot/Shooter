@@ -1,5 +1,3 @@
-using System;
-using Com.Kearny.Shooter.Guns;
 using UnityEngine;
 
 namespace Com.Kearny.Shooter
@@ -18,6 +16,11 @@ namespace Com.Kearny.Shooter
         }
 
         public void TakeHit(float damage, RaycastHit hit)
+        {
+           TakeDamage(damage);
+        }
+
+        public void TakeDamage(float damage)
         {
             health -= damage;
 

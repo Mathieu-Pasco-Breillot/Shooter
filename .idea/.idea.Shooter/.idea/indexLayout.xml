@@ -3,10 +3,10 @@
   <component name="ContentModelUserStore">
     <attachedFolders />
     <explicitIncludes>
-      <Path>Assets</Path>
       <Path>Library/PackageCache/com.unity.ext.nunit@1.0.0</Path>
       <Path>Library/PackageCache/com.unity.ide.rider@1.2.1</Path>
       <Path>Library/PackageCache/com.unity.probuilder@4.2.3</Path>
+      <Path>Library/PackageCache/com.unity.progrids@3.0.3-preview.6</Path>
       <Path>Library/PackageCache/com.unity.render-pipelines.core@8.0.1</Path>
       <Path>Library/PackageCache/com.unity.render-pipelines.universal@8.0.1</Path>
       <Path>Library/PackageCache/com.unity.searcher@4.0.9</Path>
