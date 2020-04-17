@@ -5,10 +5,10 @@ namespace Com.Kearny.Shooter.Player
 {
     [RequireComponent(typeof(PlayerController))]
     [RequireComponent(typeof(GunController))]
-    public class Player : MonoBehaviour
+    public class Player : LivingEntity
     {
         private bool _cursorLocked = true;
-        
+
         public float moveSpeed = 5;
 
         public float xSensitivity;
@@ -20,12 +20,14 @@ namespace Com.Kearny.Shooter.Player
         private Transform _mainCameraTransform;
 
         private GunController _gunController;
-        
-        private readonly Quaternion _camCenter = new Quaternion(0,0,0,1);
+
+        private readonly Quaternion _camCenter = new Quaternion(0, 0, 0, 1);
 
         // Start is called before the first frame update
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
+            
             _mainCamera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
             _mainCameraTransform = _mainCamera.transform;
             _controller = GetComponent<PlayerController>();
@@ -43,7 +45,7 @@ namespace Com.Kearny.Shooter.Player
             var forwardMovement = localTransform.forward * verticalInput;
             var rightMovement = localTransform.right * horizontalInput;
             _controller.Move(Vector3.ClampMagnitude(forwardMovement + rightMovement, 1f) * moveSpeed);
-            
+
             // Look movement input
             if (_cursorLocked)
             {
@@ -63,9 +65,9 @@ namespace Com.Kearny.Shooter.Player
             var xRotation = Quaternion.AngleAxis(yAngle, -Vector3.right);
             var delta = _mainCameraTransform.localRotation * xRotation;
             var angle = Quaternion.Angle(_camCenter, delta);
-            
+
             if (!(angle > -maxAngle) || !(angle < maxAngle)) return;
-            
+
             _mainCameraTransform.localRotation = delta;
         }
 

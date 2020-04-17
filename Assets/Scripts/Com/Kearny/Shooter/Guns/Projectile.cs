@@ -1,12 +1,14 @@
-﻿using UnityEngine;
+﻿using Com.Kearny.Shooter.Enemy;
+using UnityEngine;
 
 namespace Com.Kearny.Shooter.Guns
 {
     public class Projectile : MonoBehaviour
     {
-        public LayerMask collisionMask; 
-            
+        public LayerMask collisionMask;
+
         private float _speed;
+        private readonly float _damage = 1;
 
         public void SetSpeed(float newSpeed)
         {
@@ -33,8 +35,9 @@ namespace Com.Kearny.Shooter.Guns
 
         private void OnHitObject(RaycastHit hit)
         {
-            print(hit.collider.gameObject.name);
-            GameObject.Destroy(gameObject);
+            hit.collider.GetComponent<IDamageable>()?.TakeHit(_damage, hit);
+
+            Destroy(gameObject);
         }
     }
 }
