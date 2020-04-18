@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Com.Kearny.Shooter.GameMechanics;
+using UnityEngine;
 
 namespace Com.Kearny.Shooter.Guns
 {

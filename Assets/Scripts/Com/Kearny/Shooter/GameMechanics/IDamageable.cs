@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Com.Kearny.Shooter
+namespace Com.Kearny.Shooter.GameMechanics
 {
     public interface IDamageable
     {

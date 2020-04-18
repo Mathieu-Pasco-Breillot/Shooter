@@ -1,4 +1,5 @@
-﻿using Com.Kearny.Shooter.Guns;
+﻿using Com.Kearny.Shooter.GameMechanics;
+using Com.Kearny.Shooter.Guns;
 using UnityEngine;
 
 namespace Com.Kearny.Shooter.Player
@@ -7,7 +8,7 @@ namespace Com.Kearny.Shooter.Player
     [RequireComponent(typeof(GunController))]
     public class Player : LivingEntity
     {
-        private bool _cursorLocked = true;
+        private Transform _mainCameraTransform;
 
         public float moveSpeed = 5;
 
@@ -16,8 +17,7 @@ namespace Com.Kearny.Shooter.Player
         public float maxAngle = 75f;
 
         private PlayerController _controller;
-        private Camera _mainCamera;
-        private Transform _mainCameraTransform;
+        public Camera _mainCamera;
 
         private GunController _gunController;
 
@@ -28,7 +28,6 @@ namespace Com.Kearny.Shooter.Player
         {
             base.Start();
             
-            _mainCamera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
             _mainCameraTransform = _mainCamera.transform;
             _controller = GetComponent<PlayerController>();
             _gunController = GetComponent<GunController>();
@@ -46,17 +45,8 @@ namespace Com.Kearny.Shooter.Player
             var rightMovement = localTransform.right * horizontalInput;
             _controller.Move(Vector3.ClampMagnitude(forwardMovement + rightMovement, 1f) * moveSpeed);
 
-            // Look movement input
-            if (_cursorLocked)
-            {
-                SetX();
-                SetY();
-            }
-        }
-
-        private void FixedUpdate()
-        {
-            UpdateLockCursor();
+            SetX();
+            SetY();
         }
 
         private void SetY()
@@ -78,30 +68,6 @@ namespace Com.Kearny.Shooter.Player
             var delta = transform.localRotation * xRotation;
 
             _controller.Rotate(delta);
-        }
-
-        private void UpdateLockCursor()
-        {
-            if (_cursorLocked)
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-
-                if (Input.GetKeyDown(KeyCode.Escape))
-                {
-                    _cursorLocked = false;
-                }
-            }
-            else
-            {
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-
-                if (Input.GetKeyDown(KeyCode.Escape))
-                {
-                    _cursorLocked = true;
-                }
-            }
         }
     }
 }

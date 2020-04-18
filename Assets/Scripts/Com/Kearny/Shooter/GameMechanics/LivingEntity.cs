@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Com.Kearny.Shooter
+namespace Com.Kearny.Shooter.GameMechanics
 {
     public class LivingEntity : MonoBehaviour, IDamageable
     {
@@ -30,6 +30,7 @@ namespace Com.Kearny.Shooter
             }
         }
 
+        [ContextMenu("Self Destruct")]
         private void Die()
         {
             isDead = true;
