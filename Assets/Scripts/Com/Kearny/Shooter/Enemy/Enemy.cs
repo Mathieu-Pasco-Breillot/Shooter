@@ -16,31 +16,22 @@ namespace Com.Kearny.Shooter.Enemy
 
             Attacking
         };
-
         private State _currentState;
 
+        public ParticleSystem deathEffect;
+
         private NavMeshAgent _pathFinder;
-
         private Transform _target;
-
         private LivingEntity _targetEntity;
-
         private Material _skinMaterial;
 
         private Color _originalColor;
-
         private const float AttackDistanceThreshold = 1.5f;
-
         private const float TimeBetweenAttacks = 1;
-
         private const float Damage = 1;
-
         private float _nextAttackTime;
-
         private float _myCollisionRadius;
-
         private float _targetCollisionRadius;
-
         private bool _hasTarget;
 
         protected override void Start()
@@ -77,9 +68,22 @@ namespace Com.Kearny.Shooter.Enemy
                 AttackDistanceThreshold + _myCollisionRadius + _targetCollisionRadius,
                 2
             ))) return;
-            
+
             _nextAttackTime = Time.time + TimeBetweenAttacks;
             StartCoroutine(Attack());
+        }
+
+        public override void TakeHit(float damage, Vector3 hitLocation, Vector3 hitDirection)
+        {
+            if (damage >= health)
+            {
+                Destroy(
+                    Instantiate(deathEffect, hitLocation, Quaternion.FromToRotation(Vector3.forward, hitDirection)),
+                    deathEffect.main.duration
+                );
+            }
+
+            base.TakeHit(damage, hitLocation, hitDirection);
         }
 
         private void OnTargetDeath()
@@ -112,7 +116,7 @@ namespace Com.Kearny.Shooter.Enemy
                     hasAppliedDamage = true;
                     _targetEntity.TakeDamage(Damage);
                 }
-                
+
                 percent += Time.deltaTime * attackSpeed;
                 var interpolation = (-Mathf.Pow(percent, 2) + percent) * 4;
                 transform.position = Vector3.Lerp(originalPosition, attackPosition, interpolation);

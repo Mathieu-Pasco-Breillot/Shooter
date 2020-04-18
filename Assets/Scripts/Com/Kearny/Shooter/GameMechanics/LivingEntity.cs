@@ -15,12 +15,12 @@ namespace Com.Kearny.Shooter.GameMechanics
             health = startingHealth;
         }
 
-        public void TakeHit(float damage, RaycastHit hit)
+        public virtual void TakeHit(float damage, Vector3 hitLocation, Vector3 hitDirection)
         {
            TakeDamage(damage);
         }
 
-        public void TakeDamage(float damage)
+        public virtual void TakeDamage(float damage)
         {
             health -= damage;
 

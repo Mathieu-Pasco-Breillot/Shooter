@@ -22,7 +22,7 @@ namespace Com.Kearny.Shooter.Guns
             var initialCollisions = Physics.OverlapSphere(transform.position, .1f, collisionMask);
             if (initialCollisions.Length > 0)
             {
-                OnHitObject(initialCollisions[0]);
+                OnHitObject(initialCollisions[0], transform.position);
             }
         }
 
@@ -45,20 +45,13 @@ namespace Com.Kearny.Shooter.Guns
             var ray = new Ray(localTransform.position, localTransform.forward);
             if (Physics.Raycast(ray, out var hit, moveDistance + skinWidth, collisionMask, QueryTriggerInteraction.Collide))
             {
-                OnHitObject(hit);
+                OnHitObject(hit.collider, hit.point);
             }
         }
 
-        private void OnHitObject(RaycastHit hit)
+        private void OnHitObject(Component colliderComponent, Vector3 hitPoint)
         {
-            hit.collider.GetComponent<IDamageable>()?.TakeHit(Damage, hit);
-
-            Destroy(gameObject);
-        }
-
-        private void OnHitObject(Component colliderComponent)
-        {
-            colliderComponent.GetComponent<IDamageable>()?.TakeDamage(Damage);
+            colliderComponent.GetComponent<IDamageable>()?.TakeHit(Damage, hitPoint, transform.forward);
 
             Destroy(gameObject);
         }

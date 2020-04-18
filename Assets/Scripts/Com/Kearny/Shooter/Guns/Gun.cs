@@ -9,6 +9,9 @@ namespace Com.Kearny.Shooter.Guns
         public float msBetweenShots = 100;
         public float muzzleVelocity = 35;
 
+        public Transform shell;
+        public Transform shellEjection;
+
         public abstract FireType FireType { get; }
 
         private float _nextShotTime;
@@ -20,6 +23,8 @@ namespace Com.Kearny.Shooter.Guns
             _nextShotTime = Time.time + msBetweenShots / 1000;
             var newProjectile = Instantiate(projectile, muzzle.position, muzzle.rotation);
             newProjectile.SetSpeed(muzzleVelocity);
+
+            Instantiate(shell, shellEjection.position, shellEjection.rotation);
         }
     }
 }
