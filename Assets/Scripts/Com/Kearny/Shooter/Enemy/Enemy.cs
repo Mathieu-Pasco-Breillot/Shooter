@@ -36,6 +36,7 @@ namespace Com.Kearny.Shooter.Enemy
 
         protected override void Start()
         {
+            // Tout ça on s'en fout
             base.Start();
 
             _pathFinder = GetComponent<NavMeshAgent>();
