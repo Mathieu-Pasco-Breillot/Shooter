@@ -9,8 +9,8 @@ namespace Com.Kearny.Shooter.Guns
         public float forceMin;
         public float forceMax;
 
-        private float lifetime = 4;
-        private float fadetime = 2;
+        private float _lifetime = 4;
+        private float _fadetime = 2;
 
         // Start is called before the first frame update
         private void Start()
@@ -27,12 +27,12 @@ namespace Com.Kearny.Shooter.Guns
         {
         }
 
-        IEnumerator Fade()
+        private IEnumerator Fade()
         {
-            yield return new WaitForSeconds(lifetime);
+            yield return new WaitForSeconds(_lifetime);
 
             float percent = 0;
-            float fadeSpeed = 1 / fadetime;
+            float fadeSpeed = 1 / _fadetime;
             Material material = GetComponent<Renderer>().material;
             Color initialColor = material.color;
 

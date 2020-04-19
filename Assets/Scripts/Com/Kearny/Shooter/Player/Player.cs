@@ -5,7 +5,6 @@ using UnityEngine;
 namespace Com.Kearny.Shooter.Player
 {
     [RequireComponent(typeof(PlayerController))]
-    [RequireComponent(typeof(GunController))]
     public class Player : LivingEntity
     {
         private Transform _mainCameraTransform;
@@ -17,9 +16,7 @@ namespace Com.Kearny.Shooter.Player
         public float maxAngle = 75f;
 
         private PlayerController _controller;
-        public Camera _mainCamera;
-
-        private GunController _gunController;
+        public Camera mainCamera;
 
         private readonly Quaternion _camCenter = new Quaternion(0, 0, 0, 1);
 
@@ -28,9 +25,8 @@ namespace Com.Kearny.Shooter.Player
         {
             base.Start();
             
-            _mainCameraTransform = _mainCamera.transform;
+            _mainCameraTransform = mainCamera.transform;
             _controller = GetComponent<PlayerController>();
-            _gunController = GetComponent<GunController>();
         }
 
         // Update is called once per frame

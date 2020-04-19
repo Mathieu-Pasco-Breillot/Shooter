@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Com.Kearny.Shooter.Guns
@@ -21,19 +22,14 @@ namespace Com.Kearny.Shooter.Guns
         {
             if (!_isGunEquipped) return;
 
-            if (_equippedGun.FireType == FireType.SemiAutomatic)
+            if (Input.GetButton("Fire1"))
             {
-                if (Input.GetButtonDown("Fire1"))
-                {
-                    Shoot();
-                }
+                OnTriggerHold();
             }
-            else if (_equippedGun.FireType == FireType.Automatic)
+
+            if (Input.GetButtonUp("Fire1"))
             {
-                if (Input.GetButton("Fire1"))
-                {
-                    Shoot();
-                }
+                OnTriggerRelease();
             }
         }
 
@@ -48,9 +44,14 @@ namespace Com.Kearny.Shooter.Guns
             _isGunEquipped = true;
         }
 
-        private void Shoot()
+        public void OnTriggerHold()
         {
-            _equippedGun.Shoot();
+            _equippedGun.OnTriggerHold();
+        }
+
+        public void OnTriggerRelease()
+        {
+            _equippedGun.OnTriggerRelease();
         }
     }
 }

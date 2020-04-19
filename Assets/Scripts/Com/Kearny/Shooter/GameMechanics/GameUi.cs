@@ -5,18 +5,18 @@ using UnityEngine.UI;
 
 namespace Com.Kearny.Shooter.GameMechanics
 {
-    public class GameUI : MonoBehaviour
+    public class GameUi : MonoBehaviour
     {
         public Image fadePlane;
-        public GameObject gameOverUI;
+        public GameObject gameOverUi;
 
-        private Camera mainCamera;
+        private Camera _mainCamera;
 
         // Start is called before the first frame update
         private void Start()
         {
-            mainCamera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
-            mainCamera.enabled = false;
+            _mainCamera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
+            _mainCamera.enabled = false;
             
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
@@ -26,17 +26,17 @@ namespace Com.Kearny.Shooter.GameMechanics
 
         private void OnGameOver()
         {
-            mainCamera.enabled = true;
+            _mainCamera.enabled = true;
             
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             
             StartCoroutine(Fade(Color.clear, Color.black, 1));
-            gameOverUI.SetActive(true);
+            gameOverUi.SetActive(true);
         }
 
         private IEnumerator Fade(Color from, Color to, float time)
-        {
+        { 
             to.a = .5f;
 
             var speed = 1 / time;
@@ -53,7 +53,7 @@ namespace Com.Kearny.Shooter.GameMechanics
         // UI Input
         public void StartNewGame()
         {
-            mainCamera.enabled = false;
+            _mainCamera.enabled = false;
             
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;

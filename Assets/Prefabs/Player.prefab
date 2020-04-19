@@ -308,7 +308,7 @@ MonoBehaviour:
   xSensitivity: 100
   ySensitivity: 100
   maxAngle: 75
-  _mainCamera: {fileID: 5338040443079810592}
+  mainCamera: {fileID: 5338040443079810592}
 --- !u!143 &1345412303426383172
 CharacterController:
   m_ObjectHideFlags: 0
