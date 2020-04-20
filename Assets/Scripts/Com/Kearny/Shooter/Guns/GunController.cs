@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace Com.Kearny.Shooter.Guns
@@ -6,15 +5,14 @@ namespace Com.Kearny.Shooter.Guns
     public class GunController : MonoBehaviour
     {
         public Transform weaponHold;
-        public Gun startingGun;
-        private Gun _equippedGun;
-        private bool _isGunEquipped = false;
+        public Gun equippedGun;
+        private bool _isGunEquipped;
 
         private void Start()
         {
-            if (startingGun != null)
+            if (equippedGun != null)
             {
-                EquipGun(startingGun);
+                EquipGun(equippedGun);
             }
         }
 
@@ -35,23 +33,23 @@ namespace Com.Kearny.Shooter.Guns
 
         public void EquipGun(Gun gunToEquip)
         {
-            if (_equippedGun != null)
+            if (equippedGun != null)
             {
-                Destroy(_equippedGun.gameObject);
+                Destroy(equippedGun.gameObject);
             }
 
-            _equippedGun = Instantiate(gunToEquip, weaponHold.position, weaponHold.rotation, weaponHold);
+            equippedGun = Instantiate(gunToEquip, weaponHold.position, weaponHold.rotation, weaponHold);
             _isGunEquipped = true;
         }
 
-        public void OnTriggerHold()
+        private void OnTriggerHold()
         {
-            _equippedGun.OnTriggerHold();
+            equippedGun.OnTriggerHold();
         }
 
-        public void OnTriggerRelease()
+        private void OnTriggerRelease()
         {
-            _equippedGun.OnTriggerRelease();
+            equippedGun.OnTriggerRelease();
         }
     }
 }

@@ -19995,8 +19995,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 855b586cd722c477c9ca145d84848a45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadePlane: {fileID: 0}
-  gameOverUi: {fileID: 0}
+  fadePlane: {fileID: 849880821}
+  gameOverUi: {fileID: 1589482656}
 --- !u!1001 &723795076
 PrefabInstance:
   m_ObjectHideFlags: 0

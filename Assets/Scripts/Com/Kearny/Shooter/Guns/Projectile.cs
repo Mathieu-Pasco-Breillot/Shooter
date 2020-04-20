@@ -13,7 +13,7 @@ namespace Com.Kearny.Shooter.Guns
 
         private const float Lifetime = 3;
 
-        private float _skinWidth = .1f;
+        private const float SkinWidth = .1f;
 
         private void Start()
         {
@@ -43,7 +43,7 @@ namespace Com.Kearny.Shooter.Guns
         {
             var localTransform = transform;
             var ray = new Ray(localTransform.position, localTransform.forward);
-            if (Physics.Raycast(ray, out var hit, moveDistance + _skinWidth, collisionMask, QueryTriggerInteraction.Collide))
+            if (Physics.Raycast(ray, out var hit, moveDistance + SkinWidth, collisionMask, QueryTriggerInteraction.Collide))
             {
                 OnHitObject(hit.collider, hit.point);
             }

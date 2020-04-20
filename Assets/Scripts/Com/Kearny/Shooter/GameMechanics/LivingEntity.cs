@@ -20,7 +20,7 @@ namespace Com.Kearny.Shooter.GameMechanics
            TakeDamage(damage);
         }
 
-        public virtual void TakeDamage(float damage)
+        public void TakeDamage(float damage)
         {
             health -= damage;
 
@@ -34,10 +34,7 @@ namespace Com.Kearny.Shooter.GameMechanics
         private void Die()
         {
             isDead = true;
-            if (OnDeath != null)
-            {
-                OnDeath();
-            }
+            OnDeath?.Invoke();
             Destroy(gameObject);
         }
     }

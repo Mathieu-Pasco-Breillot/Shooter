@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -10,7 +9,6 @@ namespace Com.Kearny.Shooter.GameMechanics
     {
         private LinkedList<GameObject> _shuffledSpawners;
 
-        // Start is called before the first frame update
         private void Start()
         {
             _shuffledSpawners = Shuffle(GameObject.FindGameObjectsWithTag("EnemySpawn"));

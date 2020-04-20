@@ -12,7 +12,6 @@ namespace Com.Kearny.Shooter.GameMechanics
 
         private Camera _mainCamera;
 
-        // Start is called before the first frame update
         private void Start()
         {
             _mainCamera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();

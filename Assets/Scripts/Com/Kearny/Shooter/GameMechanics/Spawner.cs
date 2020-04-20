@@ -74,10 +74,7 @@ namespace Com.Kearny.Shooter.GameMechanics
             _enemiesRemainingToSpawn = _currentWave.enemyCount;
             _enemiesRemainingAlive = _enemiesRemainingToSpawn;
 
-            if (OnNewWave != null)
-            {
-                OnNewWave(_currentWaveNumber);
-            }
+            OnNewWave?.Invoke(_currentWaveNumber);
         }
 
         [System.Serializable]

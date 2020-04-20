@@ -36,27 +36,24 @@ namespace Com.Kearny.Shooter.Enemy
 
         protected override void Start()
         {
-            // Tout ça on s'en fout
             base.Start();
 
             _pathFinder = GetComponent<NavMeshAgent>();
             _skinMaterial = GetComponent<Renderer>().material;
             _originalColor = _skinMaterial.color;
 
-            if (GameObject.FindGameObjectWithTag("Player"))
-            {
-                _currentState = State.Chasing;
-                _hasTarget = true;
+            if (!GameObject.FindGameObjectWithTag("Player")) return;
+            _currentState = State.Chasing;
+            _hasTarget = true;
 
-                _target = GameObject.FindGameObjectWithTag("Player").transform;
-                _targetEntity = _target.GetComponent<LivingEntity>();
-                _targetEntity.OnDeath += OnTargetDeath;
+            _target = GameObject.FindGameObjectWithTag("Player").transform;
+            _targetEntity = _target.GetComponent<LivingEntity>();
+            _targetEntity.OnDeath += OnTargetDeath;
 
-                _myCollisionRadius = GetComponent<CapsuleCollider>().radius;
-                _targetCollisionRadius = _target.GetComponent<CapsuleCollider>().radius;
+            _myCollisionRadius = GetComponent<CapsuleCollider>().radius;
+            _targetCollisionRadius = _target.GetComponent<CapsuleCollider>().radius;
 
-                StartCoroutine(UpdatePath());
-            }
+            StartCoroutine(UpdatePath());
         }
 
         private void Update()
