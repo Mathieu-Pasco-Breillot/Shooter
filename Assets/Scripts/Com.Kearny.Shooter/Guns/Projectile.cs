@@ -9,15 +9,13 @@ namespace Com.Kearny.Shooter.Guns
 
         private float _speed;
 
-        private const float Damage = 1;
-
-        private const float Lifetime = 3;
-
-        private const float SkinWidth = .1f;
+        private const float DAMAGE = 1;
+        private const float LIFETIME = 3;
+        private const float SKIN_WIDTH = .1f;
 
         private void Start()
         {
-            Destroy(gameObject, Lifetime);
+            Destroy(gameObject, LIFETIME);
 
             var initialCollisions = Physics.OverlapSphere(transform.position, .1f, collisionMask);
             if (initialCollisions.Length > 0)
@@ -26,6 +24,7 @@ namespace Com.Kearny.Shooter.Guns
             }
         }
 
+        // Quel intérêt de faire une méthode qui fait le travail d'un setter ? Pour quoi ne pas remplacer ton champ par une propriété public ?
         public void SetSpeed(float newSpeed)
         {
             _speed = newSpeed;
@@ -43,7 +42,7 @@ namespace Com.Kearny.Shooter.Guns
         {
             var localTransform = transform;
             var ray = new Ray(localTransform.position, localTransform.forward);
-            if (Physics.Raycast(ray, out var hit, moveDistance + SkinWidth, collisionMask, QueryTriggerInteraction.Collide))
+            if (Physics.Raycast(ray, out var hit, moveDistance + SKIN_WIDTH, collisionMask, QueryTriggerInteraction.Collide))
             {
                 OnHitObject(hit.collider, hit.point);
             }
@@ -51,7 +50,7 @@ namespace Com.Kearny.Shooter.Guns
 
         private void OnHitObject(Component colliderComponent, Vector3 hitPoint)
         {
-            colliderComponent.GetComponent<IDamageable>()?.TakeHit(Damage, hitPoint, transform.forward);
+            colliderComponent.GetComponent<IDamageable>()?.TakeHit(DAMAGE, hitPoint, transform.forward);
 
             Destroy(gameObject);
         }

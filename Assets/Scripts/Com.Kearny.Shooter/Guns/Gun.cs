@@ -2,17 +2,24 @@ using UnityEngine;
 
 namespace Com.Kearny.Shooter.Guns
 {
+    // J'ai ici l'impression que ta classe représente plus une arme à feu en général plus qu'un pistolet vu que tu as une classe enfant Pistol.
+    // Pourquoi ne pas renommer cette classe Weapon ou FireArm au pire
     public abstract class Gun : MonoBehaviour
     {
         protected abstract FireMode FireMode { get; set; }
+        public float MsBetweenShots { get; set; } = 100;
+        public float MuzzleVelocity { get; set; } = 35;
+        public Transform Muzzle { get; set; }
+        public Projectile Projectile { get; set; }
+        public Transform Shell { get; set; }
+        public Transform ShellEjection { get; set; }
 
-        public Transform muzzle;
-        public Projectile projectile;
-        public float msBetweenShots = 100;
-        public float muzzleVelocity = 35;
-
-        public Transform shell;
-        public Transform shellEjection;
+        /// <summary>
+        /// Vérifie que l'arme peut utiliser le mode de tir : <paramref name="fireModeToCheck"/>
+        /// </summary>
+        /// <param name="fireModeToCheck">Le mode de tir à appliquer à l'arme.</param>
+        /// <returns>Vrai si le mode demandé peut être utilisé par l'arme; Faux sinon.</returns>
+        protected abstract bool IsFireModeAllow(FireMode fireModeToCheck);
 
         private MuzzleFlash _muzzleFlash;
 
@@ -21,12 +28,12 @@ namespace Com.Kearny.Shooter.Guns
         private bool _triggerReleasedSinceLastShot = true;
         private int _shotsRemainingInBurst;
         
-        private const int BurstCount = 3;
+        private const int BURST_COUNT = 3;
 
         private void Start()
         {
             _muzzleFlash = GetComponent<MuzzleFlash>();
-            _shotsRemainingInBurst = BurstCount;
+            _shotsRemainingInBurst = BURST_COUNT;
         }
 
         private void Shoot()
@@ -47,11 +54,11 @@ namespace Com.Kearny.Shooter.Guns
                     return;
             }
 
-            _nextShotTime = Time.time + msBetweenShots / 1000;
-            var newProjectile = Instantiate(projectile, muzzle.position, muzzle.rotation);
-            newProjectile.SetSpeed(muzzleVelocity);
+            _nextShotTime = Time.time + MsBetweenShots / 1000;
+            var newProjectile = Instantiate(Projectile, Muzzle.position, Muzzle.rotation);
+            newProjectile.SetSpeed(MuzzleVelocity);
 
-            Instantiate(shell, shellEjection.position, shellEjection.rotation);
+            Instantiate(Shell, ShellEjection.position, ShellEjection.rotation);
 
             _muzzleFlash.Activate();
         }
@@ -65,7 +72,7 @@ namespace Com.Kearny.Shooter.Guns
         public void OnTriggerRelease()
         {
             _triggerReleasedSinceLastShot = true;
-            _shotsRemainingInBurst = BurstCount;
+            _shotsRemainingInBurst = BURST_COUNT;
         }
     }
 }

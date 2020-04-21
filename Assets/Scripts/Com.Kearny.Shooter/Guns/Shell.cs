@@ -5,33 +5,39 @@ namespace Com.Kearny.Shooter.Guns
 {
     public class Shell : MonoBehaviour
     {
-        public Rigidbody myRigidbody;
-        public float forceMin;
-        public float forceMax;
-        private Renderer _renderer;
+        /// <summary>
+        /// Lifetime unit is second
+        /// </summary>
+        private const float LIFETIME = 4;
+        /// <summary>
+        /// // Fade time unit is second
+        /// </summary>
+        private const float FADE_TIME = 2;
 
-        private const float Lifetime = 4;
-        private const float FadeTime = 2;
+        public float ForceMin { get; set; }
+        public float ForceMax { get; set; }
+        public Rigidbody Rigidbody { get; set; }
+        public Renderer Renderer { get; set; }
 
         // Start is called before the first frame update
         private void Start()
         {
-            _renderer = GetComponent<Renderer>();
+            Renderer = GetComponent<Renderer>();
             
-            var force = Random.Range(forceMin, forceMax);
-            myRigidbody.AddForce(transform.right * force);
-            myRigidbody.AddTorque(Random.insideUnitSphere * force);
+            var force = Random.Range(ForceMin, ForceMax);
+            Rigidbody.AddForce(transform.right * force);
+            Rigidbody.AddTorque(Random.insideUnitSphere * force);
 
             StartCoroutine(Fade());
         }
 
         private IEnumerator Fade()
         {
-            yield return new WaitForSeconds(Lifetime);
+            yield return new WaitForSeconds(LIFETIME);
 
             float percent = 0;
-            const float fadeSpeed = 1 / FadeTime;
-            Material material = _renderer.material;
+            const float fadeSpeed = 1 / FADE_TIME;
+            Material material = Renderer.material;
             Color initialColor = material.color;
 
             while (percent < 1)

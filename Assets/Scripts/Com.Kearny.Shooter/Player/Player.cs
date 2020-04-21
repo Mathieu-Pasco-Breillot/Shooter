@@ -6,16 +6,14 @@ namespace Com.Kearny.Shooter.Player
     [RequireComponent(typeof(PlayerController))]
     public class Player : LivingEntity
     {
+        private PlayerController _controller;
         private Transform _mainCameraTransform;
 
-        public float moveSpeed = 5;
-
-        public float xSensitivity;
-        public float ySensitivity;
-        public float maxAngle = 75f;
-
-        private PlayerController _controller;
-        public Camera mainCamera;
+        public float XSensitivity { get; set; }
+        public float YSensitivity { get; set; }
+        public float MaxAngle { get; set; } = 75f;
+        public float MoveSpeed { get; set; } = 5;
+        public Camera MainCamera { get; set; }
 
         private readonly Quaternion _camCenter = new Quaternion(0, 0, 0, 1);
 
@@ -24,7 +22,7 @@ namespace Com.Kearny.Shooter.Player
         {
             base.Start();
             
-            _mainCameraTransform = mainCamera.transform;
+            _mainCameraTransform = MainCamera.transform;
             _controller = GetComponent<PlayerController>();
         }
 
@@ -38,7 +36,7 @@ namespace Com.Kearny.Shooter.Player
             var localTransform = transform;
             var forwardMovement = localTransform.forward * verticalInput;
             var rightMovement = localTransform.right * horizontalInput;
-            _controller.Move(Vector3.ClampMagnitude(forwardMovement + rightMovement, 1f) * moveSpeed);
+            _controller.Move(Vector3.ClampMagnitude(forwardMovement + rightMovement, 1f) * MoveSpeed);
 
             SetX();
             SetY();
@@ -46,19 +44,19 @@ namespace Com.Kearny.Shooter.Player
 
         private void SetY()
         {
-            var yAngle = Input.GetAxis("Mouse Y") * ySensitivity * Time.deltaTime;
+            var yAngle = Input.GetAxis("Mouse Y") * YSensitivity * Time.deltaTime;
             var xRotation = Quaternion.AngleAxis(yAngle, -Vector3.right);
             var delta = _mainCameraTransform.localRotation * xRotation;
             var angle = Quaternion.Angle(_camCenter, delta);
 
-            if (!(angle > -maxAngle) || !(angle < maxAngle)) return;
+            if (!(angle > -MaxAngle) || !(angle < MaxAngle)) return;
 
             _mainCameraTransform.localRotation = delta;
         }
 
         private void SetX()
         {
-            var yAngle = Input.GetAxis("Mouse X") * xSensitivity * Time.deltaTime;
+            var yAngle = Input.GetAxis("Mouse X") * XSensitivity * Time.deltaTime;
             var xRotation = Quaternion.AngleAxis(yAngle, Vector3.up);
             var delta = transform.localRotation * xRotation;
 
